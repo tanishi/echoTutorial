@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/standard"
 	"net/http"
@@ -9,8 +10,8 @@ import (
 
 type (
 	task struct {
-		id    int    `json:"id"`
-		title string `json:"title"`
+		Id    int    `json:"id"`
+		Title string `json:"title"`
 	}
 )
 
@@ -21,20 +22,15 @@ var (
 
 func getTask(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
-	return c.JSON(http.StatusOK, *todo[id])
+	return c.JSON(http.StatusOK, todo[id])
 }
 
 func main() {
 	e := echo.New()
 
-	todo[0] = &task{
-		id:    0,
-		title: "ichigo",
-	}
+	todo[0] = &task{}
 
-	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
+	todo[0].Title = "test"
 
 	e.GET("/todo/:id", getTask)
 
