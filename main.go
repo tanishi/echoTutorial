@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/standard"
 	"net/http"
@@ -25,6 +24,18 @@ func getTask(c echo.Context) error {
 	return c.JSON(http.StatusOK, todo[id])
 }
 
+func updateTask(c echo.Context) error {
+	t := new(task)
+	err := c.Bind(t)
+
+	if err != nil {
+		return err
+	}
+	id, _ := strconv.Atoi(c.Param("id"))
+	todo[id].Title = t.Title
+	return c.JSON(http.StatusOK, todo[id])
+}
+
 func main() {
 	e := echo.New()
 
@@ -33,6 +44,7 @@ func main() {
 	todo[0].Title = "test"
 
 	e.GET("/todo/:id", getTask)
+	e.PUT("/todo/:id", updateTask)
 
 	e.Run(standard.New(":9999"))
 }
