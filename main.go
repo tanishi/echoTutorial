@@ -9,7 +9,7 @@ import (
 
 type (
 	task struct {
-		Id    int    `json:"id"`
+		ID    int    `json:"id"`
 		Title string `json:"title"`
 	}
 )
@@ -36,6 +36,21 @@ func updateTask(c echo.Context) error {
 	return c.JSON(http.StatusOK, todo[id])
 }
 
+func createTask(c echo.Context) error {
+	t := &task{
+		ID: seq,
+	}
+
+	err := c.Bind(t)
+
+	if err != nil {
+		return err
+	}
+	todo[t.ID] = t
+	seq++
+	return c.JSON(http.StatusCreated, t)
+}
+
 func main() {
 	e := echo.New()
 
@@ -45,6 +60,7 @@ func main() {
 
 	e.GET("/todo/:id", getTask)
 	e.PUT("/todo/:id", updateTask)
+	e.POST("/todo/", createTask)
 
 	e.Run(standard.New(":9999"))
 }
