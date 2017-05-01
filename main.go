@@ -51,6 +51,12 @@ func createTask(c echo.Context) error {
 	return c.JSON(http.StatusCreated, t)
 }
 
+func deleteTask(c echo.Context) error {
+	id, _ := strconv.Atoi(c.Param("id"))
+	delete(todo, id)
+	return c.NoContent(http.StatusNoContent)
+}
+
 func main() {
 	e := echo.New()
 
@@ -61,6 +67,7 @@ func main() {
 	e.GET("/todo/:id", getTask)
 	e.PUT("/todo/:id", updateTask)
 	e.POST("/todo/", createTask)
+	e.DELETE("todo/:id", deleteTask)
 
 	e.Run(standard.New(":9999"))
 }
