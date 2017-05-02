@@ -19,6 +19,10 @@ var (
 	seq  = 1
 )
 
+func getTodo(c echo.Context) error {
+	return c.JSON(http.StatusOK)
+}
+
 func getTask(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 	return c.JSON(http.StatusOK, todo[id])
@@ -64,6 +68,7 @@ func main() {
 
 	todo[0].Title = "test"
 
+	e.GET("/todo/", getTodo)
 	e.GET("/todo/:id", getTask)
 	e.PUT("/todo/:id", updateTask)
 	e.POST("/todo/", createTask)
