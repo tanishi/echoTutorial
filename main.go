@@ -20,7 +20,7 @@ var (
 )
 
 func getTodo(c echo.Context) error {
-	return c.JSON(http.StatusOK)
+	return c.JSON(http.StatusOK, todo)
 }
 
 func getTask(c echo.Context) error {
